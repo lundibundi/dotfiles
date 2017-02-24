@@ -1,0 +1,23 @@
+source ~/.vimrc
+
+inoremap jk <Esc>
+
+nnoremap / :action Find<CR>
+nnoremap n :action FindNext<CR>
+nnoremap N :action FindPrevious<CR>
+nnoremap U :action $Redo<CR>
+
+nnoremap gc :action GotoClass<CR>
+nnoremap gn :action GotoFile<CR>
+nnoremap gs :action GotoSymbol<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gd :action GotoDeclaration<CR>
+" nnoremap gn :action ShowNavBar<CR>
+nnoremap gf :action Forward<CR>
+nnoremap gb :action Back<CR>
+nnoremap gt :action GotoTest<CR>
+
+nnoremap cm :action BuildProject<CR>
+nnoremap cr :action Rebuild<CR>
+nnoremap cv :action Run<CR>
+nnoremap cd :action Debug<CR>

@@ -1,0 +1,9 @@
+# set environment variables for fcitx
+export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+
+# start xflux
+if [[ ! $(pgrep xflux) -gt 1 ]]; then
+  xflux -l 50.45 -g 30.52 &
+fi

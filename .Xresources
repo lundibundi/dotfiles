@@ -1,0 +1,21 @@
+# default font configuration
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+# for now commented - 
+#  use default from global config (hintfull)
+Xft.hintstyle: hintnone
+Xft.lcdfilter: lcddefault
+
+
+# configure xautolock
+Xautolock.time: 10
+Xautolock.locker: i3lock-fancy -f "Nemo-Nightmares"
+Xautolock.killtime: 10
+Xautolock.killer: systemctl suspend
+Xautolock.corners: --++
+Xautolock.cornersize: 10
+Xautolock.cornerdelay: 10
+Xautolock.cornerredelay: 60
