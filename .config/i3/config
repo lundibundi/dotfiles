@@ -1,0 +1,293 @@
+set $mod Mod4
+
+# use Mouse+Mod1 to drag floating windows to their wanted position
+floating_modifier $mod
+
+# disable focus followind mouse
+focus_follows_mouse no
+ 
+# switch to previous workspace on pushing mod+num twice
+workspace_auto_back_and_forth yes
+
+force_display_urgency_hint 0 ms
+
+# focus on new windows of current, others - urgent
+focus_on_window_activation smart
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:monospace, FontAwesome 9
+
+new_window pixel 0
+new_float normal
+
+set $blue 		        #1a92d1
+set $back               #1d1F21
+set $black              #282A2E
+#set $grey               #2f2f2f
+set $grey               #424153
+set $lightgrey          #a4a4a4
+set $lightbrown         #e7d8b1
+set $white              #C5C8C6
+set $yellow             #F0C674
+set $red                #CC6666
+set $darkred            #A54242
+set $orange 		    #f89a0e
+set $green              #B5BD56
+
+#class                  border      backgr.     text        split
+client.focused          $lightgrey  $lightgrey  $black      $red
+client.focused_inactive $grey       $grey       $lightgrey  $grey
+client.unfocused        $grey       $grey       $lightgrey  $grey
+client.urgent           $red        $red        $black      $red
+client.background       $back
+
+# gaps configuration
+smart_gaps on
+
+set $default_gaps_inner 8
+set $default_gaps_outer 0
+gaps inner $default_gaps_inner
+gaps outer $default_gaps_outer
+
+for_window [class="^.*"] border pixel 0
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start rofi
+bindsym $mod+d exec rofi -show drun -width 52 -lines 14 -yoffset -26 -font "monospace 12" -config ~/.config/rofi/purple.theme
+
+set $up k
+set $down j
+set $left h
+set $right l
+
+# change focus
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+z split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# move workspace to other monitor
+bindsym $mod+m move workspace to output left
+bindsym $mod+n move workspace to output bottom
+
+# focus the child container
+#bindsym $mod+d focus child
+
+#set $workspace1 "1:  Terminal"
+#set $workspace2 "2: Chrome"
+
+# switch to workspace
+#bindsym $mod+1 workspace $workspace1
+#bindsym $mod+2 workspace $workspace2
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+bindsym $mod+Tab workspace back_and_forth
+
+workspace $workspace1 output HDMI1
+workspace $workspace2 output HDMI1
+workspace $workspace3 output HDMI1
+workspace $workspace4 output HDMI1
+workspace $workspace5 output HDMI1
+workspace $workspace6 output LVDS1
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym $left resize shrink width 10 px or 10 ppt
+        bindsym $down resize grow height 10 px or 10 ppt
+        bindsym $up resize shrink height 10 px or 10 ppt
+        bindsym $right resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+# enter resize mode
+bindsym $mod+r mode "resize"
+
+## Manual management of external displays
+# Set the shortcuts and what they do
+set $mode_display Ext Screen (v) VGA ON, (h) HDMI ON, (x) VGA OFF, (y) HDMI OFF
+mode "$mode_display" {
+    bindsym v exec --no-startup-id xrandr --output VGA1 --auto --right-of LVDS1, mode "default"
+    bindsym h exec --no-startup-id xrandr --output HDMI1 --auto --right-of LVDS1, mode "default"
+    bindsym x exec --no-startup-id xrandr --output VGA1 --auto --off, mode "default"
+    bindsym y exec --no-startup-id xrandr --output HDMI1 --auto --off, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+# Declare here the shortcut to bring the display selection menu
+bindsym $mod+x mode "$mode_display"
+
+set $Locker i3lock-fancy -f "Nemo-Nightmares" && sleep 1
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $Locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+#bindsym s exec --no-startup-id systemctl suspend && $Locker, mode "default"
+# don't manually start lock for suspend, already have systemd unit hooked on that
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate && $Locker, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+BackSpace mode "$mode_system"
+
+bindsym Print exec deepin-screenshot
+
+# hotkeys for multimedia (aka fn) keys
+# disable touchpad - hardware key hence not needed
+# bindsym XF86TouchpadToggle exec synclient TouchpadOff=$((($(synclient|grep Off|tail -c 2)^1)))
+
+# turn backlight on/off
+#bindsym $mod+p exec pkill -SIGRTMIN+2 i3blocks && exec xbacklight -set 0
+#bindsym $mod+u exec pkill -SIGRTMIN+2 i3blocks && exec xbacklight -set 100
+bindsym $mod+p exec xbacklight -set 0
+bindsym $mod+u exec xbacklight -set 100
+
+# screen brightness
+#bindsym XF86MonBrightnessUp exec pkill -SIGRTMIN+2 i3blocks && exec xbacklight -inc 10
+#bindsym XF86MonBrightnessDown exec pkill -SIGRTMIN+2 i3blocks && exec xbacklight -dec 10 
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10 
+
+# volume buttons
+#bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- && exec pkill -SIGRTMIN+1 i3blocks
+#bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ && exec pkill -SIGRTMIN+1 i3blocks
+#bindsym XF86AudioMute exec amixer set Master toggle && exec pkill -SIGRTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec /usr/bin/pulseaudio-ctl down
+bindsym XF86AudioRaiseVolume exec /usr/bin/pulseaudio-ctl up
+bindsym XF86AudioMute exec /usr/bin/pulseaudio-ctl mute
+
+# start floating
+for_window [class="Gimp"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Caja"] floating enable
+for_window [title="Android Emulator"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+
+for_window [class="(?i)gsimplecal"] floating enable, move position mouse, move down $height px
+for_window [class="(?i)qemu-system"] floating enable
+for_window [class="(?i)VirtualBox" title="(?i)Manager"] floating enable
+for_window [class="(?i)VirtualBox"] floating enable
+for_window [class="(?i)blueman"] floating enable
+
+# set background
+exec_always --no-startup-id feh --bg-fill ~/pics/wallhaven-103929.png
+
+exec_always --no-startup-id xset r rate 200 30 &
+exec_always --no-startup-id setxkbmap -option caps:escape &
+
+# start needed programs
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+#exec_always --no-startup-id xautolock
+
+exec compton -cCb
+exec fcitx &
+exec sudo nm-applet &
+exec blueman-applet &
+exec copyq &
+exec udiskie &
+exec telegram-desktop &
+exec pasystray -a &
+
+# vim:filetype=i3
