@@ -1,4 +1,10 @@
-; [settings]
+[settings]
+compositing-background = over
+compositing-foreground = over
+compositing-overline = over
+compositing-underline = over
+compositing-border = over
+
 ; throttle-ms = 50
 ; throttle-limit = 3
 
@@ -29,6 +35,9 @@ font-3 = siji:pixelsize=10;-1
 
 [bar/top]
 inherit-from = bar/base
+
+; override-redirect = true
+; wm-restack = i3
 
 tray-position = right
 tray-transparent = true
@@ -64,7 +73,7 @@ modules-right = clock-date
 [module/github]
 type = internal/github
 
-token = 96b71baaf03975dd8becb5715c969b53c0d40085
+token = ${file:/home/lundibundi/.config/github.token}
 
 empty-notifications = false
 
