@@ -37,7 +37,7 @@ font-3 = siji:pixelsize=10;-1
 inherit-from = bar/base
 
 ; override-redirect = true
-; wm-restack = i3
+wm-restack = i3
 
 tray-position = right
 tray-transparent = true
