@@ -1,4 +1,4 @@
-set $mod Mod4
+set $mod Mod1
 
 # use Mouse+Mod1 to drag floating windows to their wanted position
 floating_modifier $mod
