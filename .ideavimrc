@@ -17,7 +17,9 @@ nnoremap gf :action Forward<CR>
 nnoremap gb :action Back<CR>
 nnoremap gt :action GotoTest<CR>
 
-nnoremap cm :action BuildProject<CR>
+nnoremap cm :action Compile<CR>
 nnoremap cr :action Rebuild<CR>
 nnoremap cv :action Run<CR>
 nnoremap cd :action Debug<CR>
+
+nnoremap si :action ShowIntentionActions<CR>
