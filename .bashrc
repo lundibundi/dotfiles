@@ -51,10 +51,10 @@ unset _JAVA_OPTIONS
 alias java='java "$_SILENT_JAVA_OPTIONS"'
 
 # android variables
-export ANDROID_HOME=/opt/android-sdk
+export ANDROID_HOME=/mnt/shared/android/sdk
 
 # android ndk variables
-source /etc/profile.d/android-ndk.sh
+#source /etc/profile.d/android-ndk.sh
 
 # add depot tools to path
 source /etc/profile.d/depot_tools.sh

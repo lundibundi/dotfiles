@@ -123,6 +123,7 @@ set statusline=%t%m%r%h%w\ %10{&encoding}\ %20b,0x%B\ %10l,%v\ %10p%%
 
 " autocompletion mode(list all and complete to general on first <Tab> then full completion)
 set wildmode=list:longest,full      
+set wildmenu
 
 " Syntax highlighting
 syntax on                           
