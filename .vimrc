@@ -29,6 +29,9 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'bkad/CamelCaseMotion'
 Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-repeat'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'JamshedVesuna/vim-markdown-preview'
 
 call vundle#end()            
 filetype plugin indent on   
@@ -104,10 +107,8 @@ set lazyredraw
 " the cursor.
 set scrolloff=3     
 
-" When on, lines longer than the width of the window will
-" wrap and displaying continues on the next line. Doesn't
-" change a textbuffer, just the way text is displayed.
-set wrap            
+set nowrap
+autocmd FileType text setlocal textwidth=80
 
 " enable folds
 set foldenable
@@ -122,6 +123,22 @@ set showtabline=2
 set noshowmode 
 
 set statusline=%t%m%r%h%w\ %10{&encoding}\ %20b,0x%B\ %10l,%v\ %10p%%
+
+" Enable alternative keyboard layout (C-^ to switch)
+set keymap=russian-jcuken
+"set keymap=ukrainian-jcuken
+set iminsert=0
+set imsearch=0
+
+" Easier keyboard mappings for keyboard layout switching
+inoremap <C-Space> <C-^>
+nnoremap <C-Space> a<C-^><Esc>
+
+" Enable spell cheking for certain types of files
+autocmd FileType gitcommit setlocal spell
+autocmd FileType text      setlocal spell
+autocmd FileType plaintex  setlocal spell
+autocmd FileType tex       setlocal spell
 
 " autocompletion mode(list all and complete to general on first <Tab> then full completion)
 set wildmode=list:longest,full      
@@ -237,3 +254,10 @@ omap <silent> gie <Plug>CamelCaseMotion_ie
 xmap <silent> giw <Plug>CamelCaseMotion_iw
 xmap <silent> gib <Plug>CamelCaseMotion_ib
 xmap <silent> gie <Plug>CamelCaseMotion_ie
+
+""" Vim Markdown """"
+let g:vim_markdown_folding_disabled = 1
+
+""" Vim Markdown Preview """
+let vim_markdown_preview_github=1
+let vim_markdown_preview_use_xdg_open=1
