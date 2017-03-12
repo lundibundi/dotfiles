@@ -27,6 +27,8 @@ Plugin 'rking/ag.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'junegunn/fzf.vim'
 Plugin 'bkad/CamelCaseMotion'
+Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-repeat'
 
 call vundle#end()            
 filetype plugin indent on   

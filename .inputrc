@@ -1,0 +1,7 @@
+#bash single tab
+set show-all-if-ambiguous on
+
+# invoke manual on alt-h
+"\eh": "\C-a\eb\ed\C-y\e#man \C-y\C-m\C-p\C-p\C-a\C-d\C-e"
+
+set completion-ignore-case on

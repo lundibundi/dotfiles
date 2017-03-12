@@ -1,11 +1,14 @@
 source ~/.vimrc
 
+set surround
+
 inoremap jk <Esc>
 
 nnoremap / :action Find<CR>
 nnoremap n :action FindNext<CR>
 nnoremap N :action FindPrevious<CR>
 nnoremap U :action $Redo<CR>
+nnoremap <space>r :action ReformatCode<CR>
 
 nnoremap gc :action GotoClass<CR>
 nnoremap gn :action GotoFile<CR>
