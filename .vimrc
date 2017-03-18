@@ -10,6 +10,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'morhetz/gruvbox'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'chriskempson/base16-vim'
 Plugin 'wlangstroth/vim-racket'
 Plugin 'PotatoesMaster/i3-vim-syntax'
 Plugin 'tpope/vim-surround'

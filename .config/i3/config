@@ -59,7 +59,7 @@ bindsym $mod+o exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # start rofi
-bindsym $mod+d exec rofi -show drun -width 52 -lines 14 -yoffset -26 -font "monospace 12" -config ~/.config/rofi/purple.theme
+bindsym $mod+d exec rofi -show drun -config ~/.config/rofi/config
 
 set $up k
 set $down j
@@ -168,12 +168,6 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym $left resize shrink width 10 px or 10 ppt
         bindsym $down resize grow height 10 px or 10 ppt
         bindsym $up resize shrink height 10 px or 10 ppt
