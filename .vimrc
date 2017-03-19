@@ -131,10 +131,6 @@ set keymap=russian-jcuken
 set iminsert=0
 set imsearch=0
 
-" Easier keyboard mappings for keyboard layout switching
-inoremap <C-Space> <C-^>
-nnoremap <C-Space> a<C-^><Esc>
-
 " Enable spell cheking for certain types of files
 autocmd FileType gitcommit setlocal spell
 autocmd FileType text      setlocal spell
@@ -262,3 +258,14 @@ let g:vim_markdown_folding_disabled = 1
 """ Vim Markdown Preview """
 let vim_markdown_preview_github=1
 let vim_markdown_preview_use_xdg_open=1
+
+""" Keybindings """
+let mapleader = ' '
+
+" Easier keyboard mappings for keyboard layout switching
+inoremap <C-Space> <C-^>
+nnoremap <C-Space> a<C-^><Esc>
+
+" insert blank lines before/after current
+nmap <leader>O O<Esc>j
+nmap <leader>o o<Esc>k
