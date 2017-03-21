@@ -36,7 +36,6 @@ font-3 = siji:pixelsize=10;-1
 [bar/top]
 inherit-from = bar/base
 
-; override-redirect = true
 wm-restack = i3
 
 tray-position = right
