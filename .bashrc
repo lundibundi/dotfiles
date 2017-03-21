@@ -10,8 +10,14 @@ export TERMINAL=terminator
 # source autojump bash configuration
 source /etc/profile.d/autojump.bash
 
+complete -cf sudo
+
 # auto cd on entering path
 shopt -s autocd
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
 alias vi='vim'
 alias ls='ls --color=auto'
@@ -30,18 +36,20 @@ alias bt='bluetooth'
 alias btc='bluetoothctl'
 alias conf='/usr/bin/git --git-dir=$HOME/.conf/ --work-tree=$HOME'
 
-
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-
-PS1='[\u@\h \W]\$ '
-
-complete -cf sudo
-
 # use new experimental gcc features
 alias gccn='gcc -fconcepts'
 alias g++n='g++ -fconcepts'
+
+COLOR_RED="\033[0;31m"
+COLOR_YELLOW="\033[0;33m"
+COLOR_GREEN="\033[0;32m"
+COLOR_OCHRE="\033[38;5;95m"
+COLOR_BLUE="\033[0;34m"
+COLOR_WHITE="\033[0;37m"
+COLOR_RESET="\033[0m"
+
+export PS1="[\u@\h [$COLOR_BLUE\W$COLOR_RESET]\$ "
+export PROMPT_COMMAND=updateGitStatus 
 
 # java options 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
@@ -63,16 +71,13 @@ source /etc/profile.d/depot_tools.sh
 PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 
 # wine variables
-export WINEPREFIX=~/.win32
+export WINEPREFIX=~/.wine
 export WINEARCH=win32
 
 # set environment variables for fcitx
 export XMODIFIERS=@im=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
-
-# export torch paths
-. /home/lundibundi/torch/install/bin/torch-activate
 
 # export python virtualenv wrapper
 export WORKON_HOME=~/.virtualenvs
@@ -103,61 +108,115 @@ _fzf_compgen_path() {
 
 # fd - cd to selected directory
 fd() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
+    local dir
+    dir=$(find ${1:-.} -path '*/\.*' -prune \
+        -o -type d -print 2> /dev/null | fzf +m) &&
+        cd "$dir"
 }
 
 # fda - including hidden directories
 fda() {
-  local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+    local dir
+    dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
 }
 
 # fdr - cd to selected parent directory
 fdr() {
-  local declare dirs=()
-  get_parent_dirs() {
-    if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
-    if [[ "${1}" == '/' ]]; then
-      for _dir in "${dirs[@]}"; do echo $_dir; done
-    else
-      get_parent_dirs $(dirname "$1")
-    fi
-  }
-  local DIR=$(get_parent_dirs $(realpath "${1:-$(pwd)}") | fzf-tmux --tac)
-  cd "$DIR"
+    local declare dirs=()
+    get_parent_dirs() {
+        if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
+        if [[ "${1}" == '/' ]]; then
+            for _dir in "${dirs[@]}"; do echo $_dir; done
+        else
+            get_parent_dirs $(dirname "$1")
+        fi
+    }
+    local DIR=$(get_parent_dirs $(realpath "${1:-$(pwd)}") | fzf-tmux --tac)
+    cd "$DIR"
 }
 
 # cf - fuzzy cd from anywhere
 # ex: cf word1 word2 ... (even part of a file name)
 # zsh autoload function
 cs() {
-  local file
+    local file
 
-  file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
+    file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
 
-  if [[ -n $file ]]
-  then
-     if [[ -d $file ]]
-     then
-        cd -- $file
-     else
-        cd -- ${file:h}
-     fi
-  fi
+    if [[ -n $file ]]
+    then
+        if [[ -d $file ]]
+        then
+            cd -- $file
+        else
+            cd -- ${file:h}
+        fi
+    fi
 }
 
 del-orphans() {
-  if [[ ! -n $(pacman -Qdt) ]]; then
+if [[ ! -n $(pacman -Qdt) ]]; then
     echo "No orphans to remove."
-  else
+else
     sudo pacman -Rns $(pacman -Qdtq)
-  fi
+fi
 }
 
-# export JAVA_HOME=/usr/lib/jvm/java-default-runtime
+# get current status of git repo
+function parse_git_dirty {
+    status=`git status 2>&1 | tee`
+    dirty=`echo -n ${status} | ag "modified:" &> /dev/null; echo "$?"`
+    untracked=`echo -n ${status} | ag "Untracked files" &> /dev/null; echo "$?"`
+    ahead=`echo -n ${status} | ag "Your branch is ahead of" &> /dev/null; echo "$?"`
+    newfile=`echo -n ${status} | ag "new file:" &> /dev/null; echo "$?"`
+    renamed=`echo -n ${status} | ag "renamed:" &> /dev/null; echo "$?"`
+    deleted=`echo -n ${status} | ag "deleted:" &> /dev/null; echo "$?"`
+    bits=''
+    if [ "${renamed}" == "0" ]; then
+        bits=">${bits}"
+    fi
+    if [ "${ahead}" == "0" ]; then
+        bits="*${bits}"
+    fi
+    if [ "${newfile}" == "0" ]; then
+        bits="+${bits}"
+    fi
+    if [ "${untracked}" == "0" ]; then
+        bits="?${bits}"
+    fi
+    if [ "${deleted}" == "0" ]; then
+        bits="x${bits}"
+    fi
+    if [ "${dirty}" == "0" ]; then
+        bits="!${bits}"
+    fi
+    if [ ! "${bits}" == "" ]; then
+        echo " ${bits}"
+    else
+        echo ""
+    fi
+}
+
+function updateGitStatus {
+    PS1_GIT_STATUS_FILE="/tmp/ps1-git-status"
+    PS1_GIT_STATUS_FUSE="/tmp/ps1-git-status.fuse"
+    local branch=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+    if [[ -n "${branch}" ]]; then
+        export PS1="\n[$COLOR_BLUE\w$COLOR_RESET] $COLOR_GREEN$(<${PS1_GIT_STATUS_FILE})$COLOR_RESET\n[\u@\h]\\$ "
+        if [[ -f ${PS1_GIT_STATUS_FUSE} ]]; then
+            return 0
+        fi
+        touch ${PS1_GIT_STATUS_FUSE}
+        (
+            local stat=`parse_git_dirty`
+            echo "[${branch}${stat}]" > ${PS1_GIT_STATUS_FILE}
+            rm ${PS1_GIT_STATUS_FUSE}
+        ) & disown
+    else
+        echo "" > ${PS1_GIT_STATUS_FILE}
+        export PS1='[\u@\h \W]\$ '
+    fi
+}
 
 # distorted sound in skype
 # export PULSE_LATENCY_MSEC=60
