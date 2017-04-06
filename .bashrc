@@ -52,29 +52,28 @@ export PS1="[\u@\h [$COLOR_BLUE\W$COLOR_RESET]\$ "
 export PROMPT_COMMAND=updateGitStatus 
 
 # java options 
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
-
-_SILENT_JAVA_OPTIONS="$_JAVA_OPTIONS"
-unset _JAVA_OPTIONS
+_SILENT_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
 alias java='java "$_SILENT_JAVA_OPTIONS"'
 
-# android variables
 export ANDROID_HOME=/mnt/shared/android/sdk
 
-# android ndk variables
-#source /etc/profile.d/android-ndk.sh
-
 # add depot tools to path
-source /etc/profile.d/depot_tools.sh
+export PATH="${PATH}:/opt/depot_tools"
 
-# ruby options
-PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
+# ruby variables
+export PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
+
+# export node.js modules to PATH
+export PATH="$HOME/.node_modules/bin:${PATH}"
+
+# export haskell cabal packages
+export PATH="$HOME/.cabal/bin:${PATH}"
 
 # wine variables
 export WINEPREFIX=~/.wine
 export WINEARCH=win32
 
-# set environment variables for fcitx
+# set variables for fcitx
 export XMODIFIERS=@im=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
@@ -83,17 +82,10 @@ export QT_IM_MODULE=fcitx
 export WORKON_HOME=~/.virtualenvs
 source /usr/bin/virtualenvwrapper.sh
 
-# export node.js modules to PATH
-export PATH="$HOME/.node_modules/bin:$PATH"
-
-# export haskell cabal packages
-export PATH="$HOME/.cabal/bin:$PATH"
-
 # source fzf bash configuration
 source /usr/share/fzf/key-bindings.bash
 source /usr/share/fzf/completion.bash
 
-#complete -F _fzf_file_completion -F _fzf_path_completion -F _fzf_dir_completion -o default -o bashdefault doge
 complete -F _fzf_file_completion -o default -o bashdefault cd
 
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
@@ -103,8 +95,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 _fzf_compgen_path() {
     ag -g "" "$1"
 }
-
-# custom cd functions with the use of fzf
 
 # fd - cd to selected directory
 fd() {
@@ -217,12 +207,3 @@ function updateGitStatus {
         export PS1='[\u@\h \W]\$ '
     fi
 }
-
-# distorted sound in skype
-# export PULSE_LATENCY_MSEC=60
-
-# speed-up subsequent recompilings using ccache
-# export PATH="/usr/lib/ccache/bin/:$PATH"
-
-# enabling "vi-mode" 
-# set -o vi

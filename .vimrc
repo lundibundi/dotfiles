@@ -34,6 +34,26 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'JamshedVesuna/vim-markdown-preview'
 
+Plugin 'fholgado/minibufexpl.vim'
+Plugin 'wincent/Command-T'
+
+Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+
+Plugin 'scrooloose/nerdcommenter'
+
+" python
+Plugin 'python-mode/python-mode'
+
+Plugin 'majutsushi/tagbar'
+
+" PlantUML
+Plugin 'scrooloose/vim-slumlord'
+Plugin 'aklt/plantuml-syntax'
+
+" csv "
+Plugin 'chrisbra/csv.vim'
+
 call vundle#end()            
 filetype plugin indent on   
 
@@ -41,7 +61,7 @@ filetype plugin indent on
 inoremap jk <Esc>
 
 " python environment variable
-let $PYTHONPATH='/usr/lib/python3.5/site-packages'
+let $PYTHONPATH='/usr/lib/python3.6/site-packages'
 
 set fileformats="unix,dox,mac"
 
@@ -259,8 +279,19 @@ let g:vim_markdown_folding_disabled = 1
 let vim_markdown_preview_github=1
 let vim_markdown_preview_use_xdg_open=1
 
+""" NERDCommenter """
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+let g:NERDCommentEmptyLines = 1
+let g:NERDTrimTrailingWhitespace = 1
+
+""" PlantUML """
+let g:plantuml_executable_script = "/opt/plantuml/plantuml.jar"
+let g:slumlord_plantuml_jar_path = "/opt/plantuml/plantuml.jar"
+autocmd BufRead,BufNewFile *.puml setfiletype plantuml | set filetype=plantuml
+
 """ Keybindings """
-let mapleader = ' '
+let mapleader = ','
 
 " Easier keyboard mappings for keyboard layout switching
 inoremap <C-Space> <C-^>
@@ -269,3 +300,11 @@ nnoremap <C-Space> a<C-^><Esc>
 " insert blank lines before/after current
 nmap <leader>O O<Esc>j
 nmap <leader>o o<Esc>k
+
+" split movements
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"""
