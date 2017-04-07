@@ -2,11 +2,6 @@
 # ~/.bashrc
 #
 
-export TERMINAL=terminator 
-
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 # source autojump bash configuration
 source /etc/profile.d/autojump.bash
 
@@ -50,6 +45,8 @@ COLOR_RESET="\033[0m"
 
 export PS1="[\u@\h [$COLOR_BLUE\W$COLOR_RESET]\$ "
 export PROMPT_COMMAND=updateGitStatus 
+
+export TERMINAL=terminator 
 
 # java options 
 _SILENT_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
