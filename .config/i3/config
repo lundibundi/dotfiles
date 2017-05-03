@@ -187,14 +187,13 @@ mode "resize" {
 # enter resize mode
 bindsym $mod+r mode "resize"
 
-## Manual management of external displays
-# Set the shortcuts and what they do
+## Manual management of external displays # Set the shortcuts and what they do
 set $mode_display Ext Screen (v) VGA ON, (h) HDMI ON, (x) VGA OFF, (y) HDMI OFF
 mode "$mode_display" {
-    bindsym v exec --no-startup-id xrandr --output VGA1 --auto --right-of LVDS1, mode "default"
-    bindsym h exec --no-startup-id xrandr --output HDMI1 --auto --right-of LVDS1, mode "default"
-    bindsym x exec --no-startup-id xrandr --output VGA1 --auto --off, mode "default"
-    bindsym y exec --no-startup-id xrandr --output HDMI1 --auto --off, mode "default"
+    bindsym v exec --no-startup-id xrandr --output VGA1 --auto --right-of LVDS1 && i3-msg restart, mode "default"
+    bindsym h exec --no-startup-id xrandr --output HDMI1 --auto --right-of LVDS1 && i3-msg restart, mode "default"
+    bindsym x exec --no-startup-id xrandr --output VGA1 --auto --off && i3-msg restart, mode "default"
+    bindsym y exec --no-startup-id xrandr --output HDMI1 --auto --off && i3-msg restart, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
@@ -272,20 +271,38 @@ for_window [class="(?i)blueman"] floating enable
 # set background
 exec_always --no-startup-id feh --bg-fill ~/pics/wallhaven-103929.png
 
-exec_always --no-startup-id xset r rate 200 30 &
-exec_always --no-startup-id setxkbmap -option caps:escape &
+# set keyboard configs
+exec_always --no-startup-id xset r rate 190 30
+exec_always --no-startup-id setxkbmap -option caps:escape
 
-# start needed programs
+# restart polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-#exec_always --no-startup-id xautolock
 
-exec compton -cCb
-exec fcitx &
-exec sudo nm-applet &
-exec blueman-applet &
-exec copyq &
-exec udiskie &
-exec telegram-desktop &
-exec pasystray -a &
+#exec_always --no-startup-id xautolock
+exec --no-startup-id compton -cCb
+exec --no-startup-id fcitx
+exec --no-startup-id sudo nm-applet
+exec --no-startup-id blueman-applet
+exec --no-startup-id copyq && copyq hide
+exec --no-startup-id udiskie
+exec --no-startup-id pasystray -a
+
+# restore usual session
+exec --no-startup-id "i3-msg 'workspace 1; append_layout ~/.config/i3/layouts/workspace_1.json'"
+exec --no-startup-id "i3-msg 'workspace 2; append_layout ~/.config/i3/layouts/workspace_2.json'"
+exec --no-startup-id "i3-msg 'workspace 3; append_layout ~/.config/i3/layouts/workspace_3.json'"
+exec --no-startup-id "i3-msg 'workspace 6; append_layout ~/.config/i3/layouts/workspace_6.json'"
+
+exec --no-startup-id /usr/bin/terminator
+exec --no-startup-id /usr/bin/terminator
+
+exec --no-startup-id /opt/google/chrome/google-chrome
+
+#exec --no-startup-id /usr/bin/android-studio
+exec --no-startup-id /usr/bin/intellij-idea-ultimate-edition
+
+exec --no-startup-id /usr/bin/telegram-desktop
+exec --no-startup-id /usr/bin/slack
+exec --no-startup-id /usr/bin/gpmdp
 
 # vim:filetype=i3
