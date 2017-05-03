@@ -35,7 +35,7 @@ source $ADOTDIR/antigen.zsh
 
 antigen use oh-my-zsh
 
-antigen bundle vi-mode
+#antigen bundle vi-mode
 antigen bundle z
 antigen bundle extract
 antigen bundle pip
@@ -44,6 +44,7 @@ antigen bundle colored-man-pages
 
 antigen bundles <<COMPLETIONS
     git
+    hub
     go
     gradle
     jira
@@ -110,7 +111,9 @@ export TERMINAL=terminator
 _SILENT_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
 alias java='java "$_SILENT_JAVA_OPTIONS"'
 
+# android tools and home
 export ANDROID_HOME=/mnt/shared/android/sdk
+export PATH="${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools"
 
 # add depot tools to path
 export PATH="${PATH}:/opt/depot_tools"
@@ -135,6 +138,14 @@ export QT_IM_MODULE=fcitx
 
 # export python virtualenv wrapper
 export WORKON_HOME=~/.virtualenvs
+
+# cargo env
+source "$HOME/.cargo/env"
+
+# exercism autocompletion
+if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
+  . ~/.config/exercism/exercism_completion.zsh
+fi
 
 #export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 #export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
