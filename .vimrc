@@ -51,8 +51,21 @@ Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/vim-slumlord'
 Plugin 'aklt/plantuml-syntax'
 
+" vim table
+Plugin 'dhruvasagar/vim-table-mode'
+
+" vim drawIt
+Plugin 'vim-scripts/DrawIt'
+
 " csv "
 Plugin 'chrisbra/csv.vim'
+
+Plugin 'rust-lang/rust.vim'
+
+
+" YouCompleteMe
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdnetto/YCM-Generator'
 
 call vundle#end()            
 filetype plugin indent on   
@@ -147,9 +160,15 @@ set statusline=%t%m%r%h%w\ %10{&encoding}\ %20b,0x%B\ %10l,%v\ %10p%%
 
 " Enable alternative keyboard layout (C-^ to switch)
 set keymap=russian-jcuken
+
 "set keymap=ukrainian-jcuken
 set iminsert=0
 set imsearch=0
+
+" File and path autocompletion
+set path+=**
+set wildignore=*.o,*.pyc,*.class,*.d,*/.git/*,*/node_modules/*,.DS_Store
+set wildmenu
 
 " Enable spell cheking for certain types of files
 autocmd FileType gitcommit setlocal spell
@@ -285,6 +304,13 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 
+""" NERDTree """
+autocmd StdinReadPre * let s:std_in=1
+
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 """ PlantUML """
 let g:plantuml_executable_script = "/opt/plantuml/plantuml.jar"
 let g:slumlord_plantuml_jar_path = "/opt/plantuml/plantuml.jar"
@@ -307,4 +333,24 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-"""
+""" YouCompleteMe
+" python
+let g:ycm_python_binary_path = '/usr/bin/python3'
+" rust
+let g:ycm_rust_src_path = '/mnt/shared/rust/rust-src/src'
+let g:syntastic_rust_rustc_exe = 'cargo check'
+let g:syntastic_rust_rustc_fname = ''
+let g:syntastic_rust_rustc_args = '--'
+let g:syntastic_rust_checkers = ['rustc']
+
+" nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>gd :YcmCompleter GoTo<CR>
+nnoremap <leader>rr :YcmCompleter RefactorRename
+nnoremap <leader>gt :YcmCompleter GetType<CR>
+nnoremap <leader>gq :YcmCompleter GetDoc<CR>
+
+""" NERDTree """
+nnoremap <leader>on :NERDTreeToggle<CR>
+
+""" TAGBar """
+nmap <leader>ot :TagbarToggle<CR>
