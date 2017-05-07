@@ -1,15 +1,34 @@
 source ~/.vimrc
 
+let mapleader = ' '
+
 set surround
 
 inoremap jk <Esc>
 
+nnoremap si :action ShowIntentionActions<CR>
+
+" easy window navigation
+nnoremap <c-s-l> <c-w>l
+nnoremap <c-s-j> <c-w>j
+nnoremap <c-s-h> <c-w>h
+nnoremap <c-s-k> <c-w>k
+
+" nnoremap <c-h> <Left>
+" nnoremap <c-j> <Down>
+" nnoremap <c-k> <Up>
+" nnoremap <c-l> <Right>
+
+" use idea find
 nnoremap / :action Find<CR>
 nnoremap n :action FindNext<CR>
 nnoremap N :action FindPrevious<CR>
 nnoremap U :action $Redo<CR>
+
+" refactor actions
 nnoremap <space>r :action ReformatCode<CR>
 
+" goto actions
 nnoremap gc :action GotoClass<CR>
 nnoremap gn :action GotoFile<CR>
 nnoremap gs :action GotoSymbol<CR>
@@ -21,9 +40,20 @@ nnoremap gf :action Forward<CR>
 nnoremap gb :action Back<CR>
 nnoremap gt :action GotoTest<CR>
 
+" compile and run actions
 nnoremap cm :action Compile<CR>
 nnoremap cr :action Rebuild<CR>
 nnoremap cv :action Run<CR>
 nnoremap cd :action Debug<CR>
 
-nnoremap si :action ShowIntentionActions<CR>
+" VCS
+nnoremap <leader>gp :action Vcs.Push<CR>
+nnoremap <leader>gc :action Vcs.CommitProject<CR>
+nnoremap <leader>gf :action Vcs.UpdateProject<CR>
+nnoremap [c :action VcsShowPrevChangeMarker<CR>
+nnoremap ]c :action VcsShowNextChangeMarker<CR>
+
+
+nnoremap <leader>p :action ParameterInfo<CR>
+nnoremap <leader>q <c-q>
+

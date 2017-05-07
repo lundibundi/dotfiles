@@ -1,6 +1,6 @@
 """ setup Vundle """
 set nocompatible              " be iMproved, required
-filetype off               
+filetype off
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -170,6 +170,9 @@ set path+=**
 set wildignore=*.o,*.pyc,*.class,*.d,*/.git/*,*/node_modules/*,.DS_Store
 set wildmenu
 
+" Show trailing whitespaces
+match ErrorMsg '\s\+$'
+
 " Enable spell cheking for certain types of files
 autocmd FileType gitcommit setlocal spell
 autocmd FileType text      setlocal spell
@@ -318,6 +321,9 @@ autocmd BufRead,BufNewFile *.puml setfiletype plantuml | set filetype=plantuml
 
 """ Keybindings """
 let mapleader = ','
+
+" remove trailing whitespaces
+nnoremap <leader>rtw :%s/\s\+$//e<CR>
 
 " Easier keyboard mappings for keyboard layout switching
 inoremap <C-Space> <C-^>
