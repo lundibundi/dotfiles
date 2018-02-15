@@ -70,11 +70,6 @@ export PATH="$HOME/.cabal/bin:${PATH}"
 export WINEPREFIX=~/.wine
 export WINEARCH=win32
 
-# set variables for fcitx
-export XMODIFIERS=@im=fcitx
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-
 # export python virtualenv wrapper
 export WORKON_HOME=~/.virtualenvs
 source /usr/bin/virtualenvwrapper.sh
@@ -204,3 +199,5 @@ function updateGitStatus {
         export PS1='[\u@\h \W]\$ '
     fi
 }
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

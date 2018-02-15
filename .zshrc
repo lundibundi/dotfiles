@@ -1,35 +1,79 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+## Options section
+setopt correct                                                  # Auto correct mistakes
+setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
+setopt nocaseglob                                               # Case insensitive globbing
+setopt rcexpandparam                                            # Array expension with parameters
+setopt numericglobsort                                          # Sort filenames numerically when it makes sense
+setopt nobeep                                                   # No beep
+setopt appendhistory                                            # Immediately append history instead of overwriting
+setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
+setopt autocd                                                   # if only directory path is entered, cd there.
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
+zstyle ':completion:*' rehash true                              # automatically find new executables in path
+# Speed up completions
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+HISTFILE=~/.zhistory
+HISTSIZE=100000
+SAVEHIST=500
+
+WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
 
 HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+export EDITOR=/usr/bin/nvim
+export VISUAL=/usr/bin/nvim
+export TERMINAL=terminator
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+export CONKY_CONFIG="${HOME}/.config/conky"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+# ibus config
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+# java options
+_SILENT_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
+alias java='java "$_SILENT_JAVA_OPTIONS"'
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+# depot tools
+export PATH="${PATH}:/opt/depot_tools"
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+# android tools and home
+export ANDROID_HOME="${HOME}/android/sdk"
+export PATH="${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# export node.js modules to PATH
+export PATH="$HOME/.node_modules/bin:${PATH}"
+#
+# export gem modules to PATH
+PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 
+# wine variables
+export WINEPREFIX=~/.wine
+export WINEARCH=win32
+
+# export python virtualenv wrapper
+export WORKON_HOME=~/.virtualenvs
+
+export RUST_SRC_PATH=~/rust/nightly
+# cargo env
+if [ -f "$HOME/.cargo/env" ]; then
+  source "$HOME/.cargo/env"
+fi
+
+# exercism autocompletion
+if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
+  . ~/.config/exercism/exercism_completion.zsh
+fi
+
+# fzf configuration
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Antigen configuration
 export ADOTDIR="${HOME}/.config/antigen"
 source $ADOTDIR/antigen.zsh
 
@@ -41,10 +85,10 @@ antigen bundle extract
 antigen bundle pip
 antigen bundle command-not-found
 antigen bundle colored-man-pages
+antigen bundle git
 
 antigen bundles <<COMPLETIONS
     git
-    hub
     go
     gradle
     jira
@@ -70,19 +114,41 @@ export GEOMETRY_PROMPT_PLUGINS=(virtualenv exec_time git rustup)
 
 antigen theme frmendes/geometry
 
-#function prompt_geometry_render_lprompt() {
-#  NEWLINE=$'\n'
-#  echo "$GEOMETRY_PROMPT_PREFIX %F{$GEOMETRY_COLOR_DIR}%3~%f ${NEWLINE} "      \
-#       "%${#PROMPT_SYMBOL}{%(?.$GEOMETRY_PROMPT.$GEOMETRY_EXIT_VALUE)%} "      \
-#       "$GEOMETRY_PROMPT_SUFFIX"
-#}
 
-#antigen theme https://github.com/denysdovhan/spaceship-zsh-theme spaceship
+## Keybindings section
+bindkey -e
+bindkey '^[[7~' beginning-of-line                               # Home key
+bindkey '^[[H' beginning-of-line                                # Home key
+if [[ "${terminfo[khome]}" != "" ]]; then
+  bindkey "${terminfo[khome]}" beginning-of-line                # [Home] - Go to beginning of line
+fi
+bindkey '^[[8~' end-of-line                                     # End key
+bindkey '^[[F' end-of-line                                     # End key
+if [[ "${terminfo[kend]}" != "" ]]; then
+  bindkey "${terminfo[kend]}" end-of-line                       # [End] - Go to end of line
+fi
+bindkey '^[[2~' overwrite-mode                                  # Insert key
+bindkey '^[[3~' delete-char                                     # Delete key
+bindkey '^[[C'  forward-char                                    # Right key
+bindkey '^[[D'  backward-char                                   # Left key
+bindkey '^[[5~' history-beginning-search-backward               # Page up key
+bindkey '^[[6~' history-beginning-search-forward                # Page down key
 
-antigen apply
+# Navigate words with ctrl+arrow keys
+bindkey '^[Oc' forward-word                                     #
+bindkey '^[Od' backward-word                                    #
+bindkey '^[[1;5D' backward-word                                 #
+bindkey '^[[1;5C' forward-word                                  #
+bindkey '^H' backward-kill-word                                 # delete previous word with ctrl+backspace
+bindkey '^[[Z' undo                                             # Shift+tab undo last action
 
+## Alias section
+alias cp="cp -i"                                                # Confirm before overwriting something
+alias df='df -h'                                                # Human-readable sizes
+alias free='free -m'                                            # Show sizes in MB
 
-alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'
 alias ls='ls --color=auto'
 alias sudo='sudo '
 alias rr='ranger'
@@ -103,66 +169,12 @@ alias conf='/usr/bin/git --git-dir=$HOME/.conf/ --work-tree=$HOME'
 alias gccn='gcc -fconcepts'
 alias g++n='g++ -fconcepts'
 
-export MANPATH="/usr/local/man:$MANPATH"
-export EDITOR='vim'
-export TERMINAL=terminator 
-
-# java options 
-_SILENT_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true'
-alias java='java "$_SILENT_JAVA_OPTIONS"'
-
-# android tools and home
-export ANDROID_HOME=/mnt/shared/android/sdk
-export PATH="${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools"
-
-# add depot tools to path
-export PATH="${PATH}:/opt/depot_tools"
-
-# ruby variables
-export PATH="$(ruby -e 'print Gem.user_dir')/bin:${PATH}"
-
-# export node.js modules to PATH
-export PATH="$HOME/.node_modules/bin:${PATH}"
-
-# export haskell cabal packages
-export PATH="$HOME/.cabal/bin:${PATH}"
-
-# wine variables
-export WINEPREFIX=~/.wine
-export WINEARCH=win32
-
-# set variables for fcitx
-export XMODIFIERS=@im=fcitx
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-
-# export python virtualenv wrapper
-export WORKON_HOME=~/.virtualenvs
-
-# cargo env
-source "$HOME/.cargo/env"
-
-# exercism autocompletion
-if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
-  . ~/.config/exercism/exercism_completion.zsh
-fi
-
-#export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
-#export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-#
-#_fzf_compgen_path() {
-#    ag -g "" "$1"
-#}
-
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# Color man pages
+export LESS_TERMCAP_mb=$'\E[01;32m'
+export LESS_TERMCAP_md=$'\E[01;32m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;47;34m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;36m'
+export LESS=-r

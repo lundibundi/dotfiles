@@ -4,15 +4,19 @@ let mapleader = ' '
 
 set surround
 
+set visualbell
+
 inoremap jk <Esc>
 
 nnoremap si :action ShowIntentionActions<CR>
 
 " easy window navigation
-nnoremap <c-s-l> <c-w>l
-nnoremap <c-s-j> <c-w>j
-nnoremap <c-s-h> <c-w>h
-nnoremap <c-s-k> <c-w>k
+nnoremap <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-h> <c-w>h
+nnoremap <c-k> <c-w>k
+
+nnoremap <c-b> <c-v>
 
 " nnoremap <c-h> <Left>
 " nnoremap <c-j> <Down>
@@ -53,6 +57,8 @@ nnoremap <leader>gf :action Vcs.UpdateProject<CR>
 nnoremap [c :action VcsShowPrevChangeMarker<CR>
 nnoremap ]c :action VcsShowNextChangeMarker<CR>
 
+
+nnoremap <leader>rr :action ReformatCode<CR><Esc>
 
 nnoremap <leader>p :action ParameterInfo<CR>
 nnoremap <leader>q <c-q>
